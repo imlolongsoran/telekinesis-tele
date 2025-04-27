@@ -1,0 +1,66 @@
+<%- include('../partials/header') %>
+
+<div class="row">
+  <div class="col-md-12 mb-4">
+    <div class="card bg-black text-light border-secondary">
+      <div class="card-body">
+        <h2 class="card-title text-success mb-4">
+          <i class="bi bi-megaphone me-2"></i>Kelola Channel
+        </h2>
+        
+        <form action="/channels/add" method="POST" class="row g-3 mb-4">
+          <div class="col-md-5">
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" placeholder="Nama Channel" required>
+          </div>
+          <div class="col-md-5">
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="channelId" name="channelId" placeholder="ID Channel (contoh: @mychannel atau -1001234567890)" required>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100">
+              <i class="bi bi-plus-circle me-1"></i>Tambah
+            </button>
+          </div>
+        </form>
+        
+        <div class="alert alert-dark mb-4">
+          <i class="bi bi-info-circle me-2"></i>ID Channel bisa berupa username channel (contoh: @mychannel) atau ID numerik yang dimulai dengan -100.
+        </div>
+        
+        <% if (channels.length === 0) { %>
+          <div class="alert alert-dark text-center">
+            Belum ada channel tersimpan. Tambahkan channel Telegram Anda.
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Nama Channel</th>
+                  <th>ID Channel</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% channels.forEach(function(channel) { %>
+                  <tr>
+                    <td><%= channel.name %></td>
+                    <td><code><%= channel.channelId %></code></td>
+                    <td>
+                      <form action="/channels/delete/<%= channel.id %>" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus channel ini?')">
+                          <i class="bi bi-trash me-1"></i>Hapus
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %> 

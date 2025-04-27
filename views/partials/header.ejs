@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Auto Poster</title>
+  <!-- Google Fonts - Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Animate.css untuk animasi -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- SweetAlert2 untuk dialog konfirmasi yang lebih baik -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #6c757d;
+      --success-color: #198754;
+      --info-color: #0dcaf0;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --text-muted: #6c757d;
+    }
+    
+    body {
+      background-color: #111;
+      color: #f8f9fa;
+    }
+    
+    /* Progress width classes for dynamic bars */
+    .w-progress-0 { width: 0%; }
+    .w-progress-5 { width: 5%; }
+    .w-progress-10 { width: 10%; }
+    .w-progress-15 { width: 15%; }
+    .w-progress-20 { width: 20%; }
+    .w-progress-25 { width: 25%; }
+    .w-progress-30 { width: 30%; }
+    .w-progress-35 { width: 35%; }
+    .w-progress-40 { width: 40%; }
+    .w-progress-45 { width: 45%; }
+    .w-progress-50 { width: 50%; }
+    .w-progress-55 { width: 55%; }
+    .w-progress-60 { width: 60%; }
+    .w-progress-65 { width: 65%; }
+    .w-progress-70 { width: 70%; }
+    .w-progress-75 { width: 75%; }
+    .w-progress-80 { width: 80%; }
+    .w-progress-85 { width: 85%; }
+    .w-progress-90 { width: 90%; }
+    .w-progress-95 { width: 95%; }
+    .w-progress-100 { width: 100%; }
+    
+    /* Spinning icon animation */
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-dark text-light">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <i class="bi bi-telegram fs-3 me-2"></i>
+        <span>Telegram Auto Poster</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-house-door me-1"></i>Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tokens"><i class="bi bi-key me-1"></i>Token</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/channels"><i class="bi bi-megaphone me-1"></i>Channel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/posts"><i class="bi bi-calendar-plus me-1"></i>Posting</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container my-4"> 

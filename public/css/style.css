@@ -1,0 +1,336 @@
+/* Custom styling untuk Telegram Auto Poster */
+
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --dark-bg: #121212;
+  --darker-bg: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --card-border: #2d2d2d;
+  --text-light: #f5f5f5;
+  --text-muted: #a0a0a0;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Navbar styling */
+.navbar {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+  background-color: var(--darker-bg) !important;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand i {
+  color: var(--primary-color);
+}
+
+.nav-link {
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 0.5rem 1rem !important;
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: var(--primary-color) !important;
+}
+
+/* Card styling */
+.card {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  background-color: var(--card-bg) !important;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-title {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.card-header {
+  border-bottom: 1px solid var(--card-border);
+  background-color: var(--darker-bg) !important;
+  padding: 1rem 1.25rem;
+}
+
+/* Form elements */
+.form-control, .form-select {
+  background-color: #1f1f1f !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--card-border) !important;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+  border-color: var(--primary-color) !important;
+}
+
+label.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-success {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+}
+
+.btn-outline-success {
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-outline-success:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-outline-warning {
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.btn-outline-warning:hover {
+  background-color: var(--warning-color);
+}
+
+/* Tables */
+.table {
+  border-color: var(--card-border);
+  vertical-align: middle;
+}
+
+.table-dark {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+}
+
+.table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+  padding: 1rem 0.75rem;
+}
+
+.table td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+}
+
+/* Badges */
+.badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 10px;
+  border: none;
+  padding: 1rem 1.25rem;
+}
+
+.alert-dark {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+}
+
+.alert a {
+  font-weight: 600;
+}
+
+/* Token field */
+.token-field {
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  border-top: 1px solid var(--card-border);
+  background-color: var(--darker-bg);
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Dashboard cards */
+.display-4 {
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+/* Utilities */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-success {
+  color: var(--secondary-color) !important;
+}
+
+.text-warning {
+  color: var(--warning-color) !important;
+}
+
+.text-danger {
+  color: var(--danger-color) !important;
+}
+
+.border-primary {
+  border-color: var(--primary-color) !important;
+}
+
+.border-success {
+  border-color: var(--secondary-color) !important;
+}
+
+.border-warning {
+  border-color: var(--warning-color) !important;
+}
+
+.border-secondary {
+  border-color: var(--card-border) !important;
+}
+
+/* Image preview */
+#image-preview img {
+  border-radius: 8px;
+  border: 2px solid var(--card-border);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animate cards and elements */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.row > div {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.row > div:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.row > div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  .table-responsive {
+    border: none;
+  }
+  
+  .btn {
+    margin-bottom: 10px;
+  }
+  
+  .row > div {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  h2.card-title {
+    font-size: 1.5rem;
+  }
+} 

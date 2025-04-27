@@ -1,0 +1,430 @@
+<%- include('../partials/header') %>
+
+<div class="row">
+  <div class="col-12 mb-4">
+    <div class="card bg-black text-light border-secondary">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="card-title text-primary mb-0">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </h2>
+          <div class="badge bg-dark text-primary p-2 border border-primary">
+            <i class="bi bi-clock-history me-1"></i> <span id="current-time"></span>
+          </div>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card text-bg-dark border-primary h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5 class="card-title text-primary"><i class="bi bi-key me-2"></i>Bot Token</h5>
+                    <p class="card-text display-4 mb-0"><%= tokens.length %></p>
+                  </div>
+                  <div class="fs-1 text-primary opacity-75">
+                    <i class="bi bi-robot"></i>
+                  </div>
+                </div>
+                <div class="progress mt-3 bg-dark">
+                  <% const tokenProgressClass = 'w-progress-' + Math.min(Math.round(tokens.length * 20 / 5) * 5, 100); %>
+                  <div class="progress-bar bg-primary <%= tokenProgressClass %>" role="progressbar"></div>
+                </div>
+                <a href="/tokens" class="btn btn-outline-primary btn-sm mt-3">
+                  <i class="bi bi-gear-fill me-1"></i>Kelola Token
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="card text-bg-dark border-success h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5 class="card-title text-success"><i class="bi bi-megaphone me-2"></i>Channel</h5>
+                    <p class="card-text display-4 mb-0"><%= channels.length %></p>
+                  </div>
+                  <div class="fs-1 text-success opacity-75">
+                    <i class="bi bi-broadcast-pin"></i>
+                  </div>
+                </div>
+                <div class="progress mt-3 bg-dark">
+                  <% const channelProgressClass = 'w-progress-' + Math.min(Math.round(channels.length * 20 / 5) * 5, 100); %>
+                  <div class="progress-bar bg-success <%= channelProgressClass %>" role="progressbar"></div>
+                </div>
+                <a href="/channels" class="btn btn-outline-success btn-sm mt-3">
+                  <i class="bi bi-gear-fill me-1"></i>Kelola Channel
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="card text-bg-dark border-warning h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5 class="card-title text-warning"><i class="bi bi-calendar-plus me-2"></i>Jadwal Post</h5>
+                    <p class="card-text display-4 mb-0"><%= configs.length %></p>
+                  </div>
+                  <div class="fs-1 text-warning opacity-75">
+                    <i class="bi bi-send-check"></i>
+                  </div>
+                </div>
+                <div class="progress mt-3 bg-dark">
+                  <% const configProgressClass = 'w-progress-' + Math.min(Math.round(configs.length * 10 / 5) * 5, 100); %>
+                  <div class="progress-bar bg-warning <%= configProgressClass %>" role="progressbar"></div>
+                </div>
+                <a href="/posts" class="btn btn-outline-warning btn-sm mt-3">
+                  <i class="bi bi-gear-fill me-1"></i>Kelola Post
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if (configs.length > 0) { %>
+  <div class="col-md-8">
+  <% } else { %>
+  <div class="col-md-12">
+  <% } %>
+    <div class="card bg-black text-light border-secondary h-100">
+      <div class="card-header bg-black border-secondary d-flex justify-content-between align-items-center">
+        <h4 class="mb-0 text-info"><i class="bi bi-list-task me-2"></i>Post Terjadwal</h4>
+        <button class="btn btn-outline-info btn-sm" onclick="location.href='/posts'">
+          <i class="bi bi-plus-circle me-1"></i>Tambah Baru
+        </button>
+      </div>
+      <div class="card-body">
+        <% if (configs.length === 0) { %>
+          <div class="alert alert-dark text-center">
+            <div class="fs-1 text-muted mb-3"><i class="bi bi-calendar-x"></i></div>
+            <h5>Belum ada post terjadwal</h5>
+            <p class="mb-3">Buat jadwal posting otomatis untuk channel Telegram Anda.</p>
+            <a href="/posts" class="btn btn-primary">
+              <i class="bi bi-plus-circle me-1"></i>Buat Post Baru
+            </a>
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Channel</th>
+                  <th>Pesan</th>
+                  <th>Media</th>
+                  <th>Jadwal</th>
+                  <th>Status / Countdown</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% 
+                  // Urutkan berdasarkan timestamp
+                  const sortedConfigs = [...configs].sort((a, b) => {
+                    // Jika status pending, sortir berdasarkan waktu
+                    if (a.status === 'pending' && b.status === 'pending') {
+                      return a.scheduleTimestamp - b.scheduleTimestamp;
+                    }
+                    // Pending selalu di atas
+                    if (a.status === 'pending') return -1;
+                    if (b.status === 'pending') return 1;
+                    // Jika keduanya bukan pending, sortir berdasarkan timestamp terbaru
+                    return b.scheduleTimestamp - a.scheduleTimestamp;
+                  });
+                  
+                  // Batasi hanya tampilkan 5 item
+                  const limitedConfigs = sortedConfigs.slice(0, 5);
+                  
+                  limitedConfigs.forEach(function(config) { 
+                    const channel = channels.find(c => c.id === config.channelId);
+                    const channelName = channel ? channel.name : 'Unknown';
+                    
+                    const scheduleDate = new Date(config.scheduleTimestamp);
+                    const formattedDate = scheduleDate.toLocaleDateString('id-ID', { 
+                      day: '2-digit', 
+                      month: 'short', 
+                      year: 'numeric'
+                    });
+                    
+                    const formattedTime = scheduleDate.toLocaleTimeString('id-ID', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+                    
+                    let statusClass = 'secondary';
+                    if (config.status === 'sent') statusClass = 'success';
+                    if (config.status === 'failed') statusClass = 'danger';
+                %>
+                  <tr>
+                    <td>
+                      <span class="d-flex align-items-center">
+                        <i class="bi bi-broadcast-pin me-2 text-success"></i>
+                        <%= channelName %>
+                      </span>
+                    </td>
+                    <td>
+                      <% if (config.message.length > 40) { %>
+                        <span class="text-truncate d-inline-block" style="max-width: 200px;" title="<%= config.message %>">
+                          <%= config.message.substring(0, 40) %>...
+                        </span>
+                      <% } else { %>
+                        <%= config.message %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if (config.imagePath) { %>
+                        <span class="badge bg-info">
+                          <i class="bi bi-image me-1"></i>Ada
+                        </span>
+                      <% } else { %>
+                        <span class="badge bg-secondary">
+                          <i class="bi bi-text-paragraph me-1"></i>Teks
+                        </span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <span class="d-flex align-items-center">
+                        <i class="bi bi-calendar-event me-2 text-primary"></i>
+                        <%= formattedDate %> <span class="badge bg-dark ms-1"><%= formattedTime %></span>
+                      </span>
+                    </td>
+                    <td>
+                      <% if (config.status === 'pending') { %>
+                        <div class="countdown-timer" data-timestamp="<%= config.scheduleTimestamp %>">
+                          <div class="d-flex align-items-center countdown-display">
+                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="text-info">Menghitung...</span>
+                          </div>
+                        </div>
+                      <% } else { %>
+                        <span class="badge bg-<%= statusClass %> px-2 py-1">
+                          <% if (config.status === 'sent') { %>
+                            <i class="bi bi-check-circle me-1"></i>Terkirim
+                          <% } else if (config.status === 'processing') { %>
+                            <i class="bi bi-arrow-clockwise me-1"></i>Memproses
+                          <% } else { %>
+                            <i class="bi bi-exclamation-triangle me-1"></i>Gagal
+                          <% } %>
+                        </span>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <% if (configs.length > 5) { %>
+            <div class="text-center mt-3">
+              <a href="/posts" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-eye me-1"></i>Lihat Semua (<%= configs.length %> items)
+              </a>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <% if (configs.length > 0) { %>
+  <div class="col-md-4">
+    <div class="card bg-black text-light border-secondary h-100">
+      <div class="card-header bg-black border-secondary">
+        <h4 class="mb-0 text-info"><i class="bi bi-pie-chart me-2"></i>Statistik Status</h4>
+      </div>
+      <div class="card-body">
+        <% 
+          const pendingCount = configs.filter(c => c.status === 'pending').length;
+          const sentCount = configs.filter(c => c.status === 'sent').length;
+          const failedCount = configs.filter(c => c.status === 'failed').length;
+          const total = configs.length;
+          
+          const pendingPercent = Math.round((pendingCount / total) * 100);
+          const sentPercent = Math.round((sentCount / total) * 100);
+          const failedPercent = Math.round((failedCount / total) * 100);
+        %>
+        
+        <div class="text-center mb-4">
+          <div class="fs-1 text-info"><i class="bi bi-send"></i></div>
+          <h5>Post Status</h5>
+          <p class="text-muted">Total <%= total %> post terjadwal</p>
+        </div>
+        
+        <div class="mb-4">
+          <div class="d-flex justify-content-between mb-1">
+            <span><i class="bi bi-clock text-secondary me-1"></i> Menunggu</span>
+            <span class="badge bg-secondary"><%= pendingCount %> item (<%= pendingPercent %>%)</span>
+          </div>
+          <div class="progress mb-3" style="height: 10px;">
+            <% const pendingProgressClass = 'w-progress-' + Math.min(Math.round(pendingPercent / 5) * 5, 100); %>
+            <div class="progress-bar bg-secondary <%= pendingProgressClass %>" role="progressbar"></div>
+          </div>
+          
+          <div class="d-flex justify-content-between mb-1">
+            <span><i class="bi bi-check-circle text-success me-1"></i> Terkirim</span>
+            <span class="badge bg-success"><%= sentCount %> item (<%= sentPercent %>%)</span>
+          </div>
+          <div class="progress mb-3" style="height: 10px;">
+            <% const sentProgressClass = 'w-progress-' + Math.min(Math.round(sentPercent / 5) * 5, 100); %>
+            <div class="progress-bar bg-success <%= sentProgressClass %>" role="progressbar"></div>
+          </div>
+          
+          <div class="d-flex justify-content-between mb-1">
+            <span><i class="bi bi-exclamation-triangle text-danger me-1"></i> Gagal</span>
+            <span class="badge bg-danger"><%= failedCount %> item (<%= failedPercent %>%)</span>
+          </div>
+          <div class="progress mb-3" style="height: 10px;">
+            <% const failedProgressClass = 'w-progress-' + Math.min(Math.round(failedPercent / 5) * 5, 100); %>
+            <div class="progress-bar bg-danger <%= failedProgressClass %>" role="progressbar"></div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a href="/posts" class="btn btn-info btn-sm">
+            <i class="bi bi-gear-fill me-1"></i>Kelola Post
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<script>
+  // Tampilkan waktu saat ini
+  function updateCurrentTime() {
+    // Gunakan waktu Jakarta
+    const jakartaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
+    const now = new Date(jakartaTime);
+    
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Jakarta'
+    };
+    
+    const timeElement = document.getElementById('current-time');
+    if (timeElement) {
+      timeElement.textContent = now.toLocaleDateString('id-ID', options);
+    }
+  }
+  
+  // Fungsi untuk format angka dengan leading zero
+  function padZero(num) {
+    return num < 10 ? '0' + num : num;
+  }
+  
+  // Fungsi untuk mengkonversi timestamp ke timezone Asia/Jakarta
+  function getJakartaTime() {
+    return new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
+  }
+  
+  // Tambahkan fungsi untuk countdown timer dengan timezone Jakarta
+  function updateAllCountdowns() {
+    const countdownElements = document.querySelectorAll('.countdown-timer');
+    
+    // Dapatkan waktu Jakarta
+    const jakartaDate = new Date(getJakartaTime());
+    const now = jakartaDate.getTime();
+    
+    countdownElements.forEach(element => {
+      const targetTimestamp = parseInt(element.getAttribute('data-timestamp'));
+      const displayElement = element.querySelector('.countdown-display');
+      
+      const timeLeft = targetTimestamp - now;
+      
+      if (timeLeft <= 0) {
+        displayElement.innerHTML = `
+          <span class="badge bg-warning px-2 py-1">
+            <i class="bi bi-arrow-clockwise me-1"></i>Memproses...
+          </span>
+        `;
+        return;
+      }
+      
+      // Hitung hari, jam, menit, detik
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+      
+      let countdownHTML = '';
+      
+      // Format tampilan countdown
+      if (days > 0) {
+        countdownHTML = `
+          <span class="badge bg-primary px-2 py-1">
+            <i class="bi bi-hourglass-split me-1"></i>${days}h ${hours}j ${minutes}m
+          </span>
+        `;
+      } else if (hours > 0) {
+        countdownHTML = `
+          <span class="badge bg-primary px-2 py-1">
+            <i class="bi bi-hourglass-split me-1"></i>${hours}j ${minutes}m ${seconds}d
+          </span>
+        `;
+      } else if (minutes > 0) {
+        countdownHTML = `
+          <span class="badge bg-warning px-2 py-1">
+            <i class="bi bi-hourglass-split me-1"></i>${minutes}m ${seconds}d
+          </span>
+        `;
+      } else {
+        countdownHTML = `
+          <span class="badge bg-danger px-2 py-1">
+            <i class="bi bi-hourglass-bottom me-1"></i>${seconds}d
+          </span>
+        `;
+      }
+      
+      displayElement.innerHTML = countdownHTML;
+    });
+  }
+  
+  // Update waktu setiap detik dan juga countdown
+  updateCurrentTime();
+  updateAllCountdowns();
+  setInterval(() => {
+    updateCurrentTime();
+    updateAllCountdowns();
+  }, 1000);
+</script>
+
+<style>
+  /* Styling untuk countdown */
+  .countdown-blocks {
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .countdown-block {
+    text-align: center;
+    min-width: 40px;
+  }
+  
+  .countdown-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: block;
+  }
+  
+  .countdown-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: block;
+  }
+</style>
+
+<%- include('../partials/footer') %> 

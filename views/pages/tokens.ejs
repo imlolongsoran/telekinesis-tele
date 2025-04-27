@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+
+<div class="row">
+  <div class="col-md-12 mb-4">
+    <div class="card bg-black text-light border-secondary">
+      <div class="card-body">
+        <h2 class="card-title text-primary mb-4">
+          <i class="bi bi-key me-2"></i>Kelola Token Bot
+        </h2>
+        
+        <form action="/tokens/add" method="POST" class="row g-3 mb-4">
+          <div class="col-md-5">
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" placeholder="Nama Bot" required>
+          </div>
+          <div class="col-md-5">
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="token" name="token" placeholder="Token Bot" required>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-plus-circle me-1"></i>Tambah
+            </button>
+          </div>
+        </form>
+        
+        <% if (tokens.length === 0) { %>
+          <div class="alert alert-dark text-center">
+            Belum ada token bot tersimpan. Tambahkan token bot Telegram Anda.
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Nama Bot</th>
+                  <th>Token</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% tokens.forEach(function(tokenData) { %>
+                  <tr>
+                    <td><%= tokenData.name %></td>
+                    <td>
+                      <div class="input-group">
+                        <input type="password" class="form-control bg-dark text-light border-secondary token-field" value="<%= tokenData.token %>" readonly>
+                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <form action="/tokens/delete/<%= tokenData.id %>" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus token ini?')">
+                          <i class="bi bi-trash me-1"></i>Hapus
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    toggleButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const inputField = this.previousElementSibling;
+        const icon = this.querySelector('i');
+        
+        if (inputField.type === 'password') {
+          inputField.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          inputField.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %> 
